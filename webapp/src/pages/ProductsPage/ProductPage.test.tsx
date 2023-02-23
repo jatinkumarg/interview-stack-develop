@@ -1,42 +1,42 @@
 import React from "react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
-import { GET_INPIPELINE_ORDER_URL } from "../ApiHelper";
+import { GET_ALL_PRODUCT_URL } from "../ApiHelper";
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import HomePage from "./HomePage";
+import ProductsPage from "./ProductsPage";
 
-describe("HomePage", () => {
+describe("ProductPage", () => {
     it("shouldDisplayLoadingSpinner", () => {
         render(
             <MemoryRouter>
-                <HomePage />
+                <ProductsPage />
             </MemoryRouter>
         );
         expect(screen.getByTestId(`loading-spinner-container`)).toBeInTheDocument();
     });
-    it("shouldDisplayPipelineContainer", async () => {
+    it("shouldDisplayProductContainer", async () => {
         // set up mock for axios.get
         const response = {
             data: [
                 {
-                    "CustomerID": 1,
-                    "OrderID": 2,
-                    "OrderStatus": "Queued",
-                    "ProductID": 1
-                },
+                    "ProductID": 1,
+                    "ProductName": "Hat",
+                    "ProductPhotoURL": "https://i.ibb.co/85GGy5t/ryan-hoffman-2-BK0-JEw-QSp-Q-unsplash.jpg",
+                    "ProductStatus": 'Active'
+                }
             ],
             message: ""
         };
         const server = setupServer(
-            rest.get(GET_INPIPELINE_ORDER_URL, (req, res, ctx) => {
+            rest.get(GET_ALL_PRODUCT_URL, (req, res, ctx) => {
                 return res(ctx.status(200), ctx.json(response));
             })
         );
         server.listen();
         render(
             <MemoryRouter>
-                <HomePage />
+                <ProductsPage />
             </MemoryRouter>
         );
         await waitFor(() => {
@@ -51,14 +51,14 @@ describe("HomePage", () => {
             message: "Error"
         };
         const server = setupServer(
-            rest.get(GET_INPIPELINE_ORDER_URL, (req, res, ctx) => {
+            rest.get(GET_ALL_PRODUCT_URL, (req, res, ctx) => {
                 return res(ctx.status(500), ctx.json(response));
             })
         );
         server.listen();
         render(
             <MemoryRouter>
-                <HomePage />
+                <ProductsPage />
             </MemoryRouter>
         );
 

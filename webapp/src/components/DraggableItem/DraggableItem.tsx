@@ -11,8 +11,8 @@ const DraggableItem = (props: DraggableItemProps) => (
         className='bg-neutral-300 flex items-center justify-between mt-1 p-3 rounded w-full'
         data-testid={`draggable-container-${props.OrderID}`}
     >
-        <span data-testid={`draggable-customerID-${props.OrderID}`}>{ props.CustomerID }</span>
-        <span data-testid={`draggable-productID-${props.OrderID}`}>{ props.ProductID }</span>
+        <span data-testid={`draggable-customerID-${props.OrderID}`}>{props.CustomerID}</span>
+        <span data-testid={`draggable-productID-${props.OrderID}`}>{props.ProductID}</span>
         {(() => {
             const { OrderID, CustomerID, ProductID, OrderStatus, removeOrder } = props;
             return (
