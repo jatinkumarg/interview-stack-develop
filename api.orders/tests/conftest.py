@@ -6,6 +6,7 @@ from api.models import Customer, Product, Orders
 
 _TABLES = (Customer, Product, Orders)
 
+
 @fixture()
 def test_db():
     db = SqliteDatabase(':memory:')
@@ -15,6 +16,7 @@ def test_db():
             yield db
         finally:
             db.drop_tables(_TABLES)
+
 
 @fixture()
 def test_app(test_db):

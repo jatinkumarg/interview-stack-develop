@@ -1,5 +1,6 @@
 from api.models import Customer, Product, Orders
 
+
 def test_new_customer():
     first_name = 'Test'
     last_name = 'McTest'
@@ -9,6 +10,7 @@ def test_new_customer():
     )
     assert customer.CustomerFirstName == first_name
     assert customer.CustomerLastName == last_name
+
 
 def test_new_product():
     product_name = 'Test'
@@ -22,6 +24,7 @@ def test_new_product():
     assert product.ProductName == product_name
     assert product.ProductPhotoURL == product_photo_url
     assert product.ProductStatus == product_status
+
 
 def test_new_product_error(test_db):
     product_name = 'Test'
@@ -37,6 +40,7 @@ def test_new_product_error(test_db):
     except:
         return
     assert 'Product status field allowed incorrect data' == ''
+
 
 def test_new_order(test_db):
     first_name = 'Test'
