@@ -27,7 +27,7 @@ const ID_LIST_MAP: IdList = {
 
 const HomePage = () => {
   const [loadingState, setLoadingState] = useState(DATA_STATES.waiting);
-  const [data, setData] = useState({Queued: [], InProgress: [], QA: []} as OrderData);
+  const [data, setData] = useState({ Queued: [], InProgress: [], QA: [] } as OrderData);
 
   const getOrders = async () => {
     setLoadingState(DATA_STATES.waiting);
@@ -52,7 +52,7 @@ const HomePage = () => {
     setLoadingState(DATA_STATES.loaded);
   };
 
-  const handleDragEnd = (result: any) => {
+  const handleDragEnd = async (result: any) => {
     const { source, destination } = result;
     if (!destination) return;
     const sourceKey = ID_LIST_MAP[source.droppableId as keyof IdList] as keyof OrderData;
@@ -68,16 +68,17 @@ const HomePage = () => {
       setData({ ...data, [sourceKey]: sourceClone });
     }
     else {
-        const sourceClone = Array.from(data[sourceKey]);
-        const destClone = Array.from(data[destKey]);
-        const [removed] = sourceClone.splice(sourceIndex, 1);
-        destClone.splice(destIndex, 0, removed);
-        destClone[destIndex].OrderStatus = destKey;
-        setData({
-          ...data,
-          [sourceKey]: sourceClone,
-          [destKey]: destClone,
-        });
+      const sourceClone = Array.from(data[sourceKey]);
+      const destClone = Array.from(data[destKey]);
+      const [removed] = sourceClone.splice(sourceIndex, 1);
+      await updateOrder(removed);
+      destClone.splice(destIndex, 0, removed);
+      destClone[destIndex].OrderStatus = destKey;
+      setData({
+        ...data,
+        [sourceKey]: sourceClone,
+        [destKey]: destClone,
+      });
     }
   };
 
@@ -95,7 +96,7 @@ const HomePage = () => {
         <Spinner />
       </div>
     );
-  else if (loadingState === DATA_STATES.loaded) 
+  else if (loadingState === DATA_STATES.loaded)
     content = (
       <div
         className="flex flex-row justify-center w-full pt-4"
@@ -135,7 +136,7 @@ const HomePage = () => {
 
   return (
     <PageWrapper>
-      { content }
+      {content}
     </PageWrapper>
   );
 }
